@@ -20,9 +20,9 @@ void MainWindow::on_maskPushButton_clicked()
     QStringList nameList = folder.entryList(QStringList(), QDir::Files | QDir::NoDotAndDotDot);
     QStringList degList, maskList;
     foreach(QString name, nameList){
-        if(name.contains("_gdeg"))
+        if(name.contains("_gdeg.tiff"))
             degList.append(folder.absoluteFilePath(name));
-        if(name.contains("_mask"))
+        if(name.contains("_mask.tiff"))
             maskList.append(folder.absoluteFilePath(name));
     }
     emit signalWriteToList("Deglist and Masklist loaded.");
@@ -32,7 +32,7 @@ void MainWindow::on_maskPushButton_clicked()
             QImage degIm(degList.at(i));
             QImage maskIm(maskList.at(i));
             QString maskedName = degList.at(i);
-            maskedName.remove(".TIFF");
+            maskedName.remove(".tiff");
 
             for(int j = 0; j < degIm.width(); j++){
                 for(int k = 0; k < degIm.height(); k++){
@@ -43,7 +43,7 @@ void MainWindow::on_maskPushButton_clicked()
             }
             QApplication::processEvents();
             emit signalWriteToList("Masking " + QString::number(100*i/degList.size()) + " % ready.");
-            degIm.save(maskedName + "_masked.TIFF");
+            degIm.save(maskedName + "_masked.tiff");
         }
     }
     else
