@@ -42,7 +42,8 @@ void MainWindow::on_maskPushButton_clicked()
                 }
             }
             QApplication::processEvents();
-            emit signalWriteToList("Masking " + QString::number(100*i/degList.size()) + " % ready.");
+            if(100*i/degList.size() != 100*(i+1)/degList.size())
+                emit signalWriteToList("Masking " + QString::number(100*i/degList.size()) + " % ready.");
             degIm.save(maskedName + "_masked.tiff");
         }
     }
