@@ -5,6 +5,9 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QColor>
+#include <QFile>
+#include <QProcess>
+#include <QRegExp>
 
 namespace Ui {
 class MainWindow;
@@ -20,13 +23,18 @@ public:
 
 signals:
     void signalWriteToList(QString string);
+    void signalSendConsoleCommand(QString dirPath, QString cmd);
 
 private slots:
     void on_maskPushButton_clicked();
     void slotWriteToList(QString string);
+    void on_movePushButton_clicked();
+    void slotSendConsoleCommant(QString dirPath, QString cmd);
+
 
 private:
     Ui::MainWindow *ui;
+
 };
 
 #endif // MAINWINDOW_H
