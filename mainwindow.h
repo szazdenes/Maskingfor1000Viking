@@ -32,6 +32,8 @@ private slots:
     void slotSendConsoleCommant(QString dirPath, QString cmd);
 
 
+    void on_logPushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 

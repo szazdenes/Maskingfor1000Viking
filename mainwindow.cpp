@@ -113,3 +113,37 @@ void MainWindow::slotSendConsoleCommant(QString dirPath, QString cmd)
     proc.waitForFinished();
     proc.close();
 }
+
+void MainWindow::on_logPushButton_clicked()
+{
+    QDir folder = QFileDialog::getExistingDirectory();
+    QStringList folderNameList = folder.entryList(QStringList(), QDir::Files | QDir::NoDotAndDotDot);
+    for(int i = 0; i < folderNameList.size(); i++){
+        folderNameList.replace(i, QString(folderNameList.at(i)).split("_").first());
+        if(i != 0 && QString(folderNameList.at(i)).split("_").first() == QString(folderNameList.at(i-1)).split("_").first()){
+            folderNameList.removeAt(i);
+            i--;
+        }
+    }
+    folderNameList.removeLast();
+
+    foreach(QString currentName, folderNameList){
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/2014-06/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/2014-07/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/2014-08/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/2014-09/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201410/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201412/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201501/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201502/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201503/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201504/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201505/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201506/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201508/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201509/" + currentName + ".log");
+        QApplication::processEvents();
+        signalWriteToList(currentName + ".log downloaded.");
+    }
+    emit signalWriteToList("All log files downloaded.");
+}
