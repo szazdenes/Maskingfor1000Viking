@@ -147,3 +147,77 @@ void MainWindow::on_logPushButton_clicked()
     }
     emit signalWriteToList("All log files downloaded.");
 }
+
+void MainWindow::on_sunPushButton_clicked()
+{
+    QFile sunFile("/home/denes/Documents/Labor/Viking/1000Viking/MaskingAndMovingToFolders/sunpos.dat");
+    if(!sunFile.open(QIODevice::ReadOnly | QIODevice::Text))
+        emit signalWriteToList("sunpos.dat cannot be opened.");
+
+    QMap<QString, QPair<double, double> > sunMap; /*first: azimuth, second: elevation*/
+    QString filename;
+    double az, el;
+    QTextStream stream(&sunFile);
+    while(!stream.atEnd()){
+        QString line = stream.readLine();
+        QTextStream linestream(&line);
+        linestream >> filename >> az >> el;
+        filename.remove(".log");
+        sunMap[filename].first = az;
+        sunMap[filename].second = el;
+    }
+    sunFile.close();
+
+    QMap<QString, QStringList> folderToImageListMap;
+    QDir folder = QFileDialog::getExistingDirectory();
+    QStringList folderNameList = folder.entryList(QStringList(), QDir::Dirs | QDir::NoDotAndDotDot);
+
+    for(int i = 0; i < folderNameList.size(); i++){
+        QString currentfolder = folderNameList.at(i);
+        folderNameList.replace(i, folder.absolutePath() + "/" + currentfolder);
+    }
+
+    foreach(QString currentFolder, folderNameList){
+        if(!currentFolder.contains("maszkolni")){
+            QDir currDir(currentFolder);
+            folderToImageListMap[currentFolder] = currDir.entryList(QStringList("*_gdeg_masked.tiff"), QDir::Files | QDir::NoDotAndDotDot);
+        }
+    }
+
+    foreach(QString currDirname, folderToImageListMap.keys()){
+        foreach(QString currImagename, folderToImageListMap[currDirname]){
+            QImage currImage(currDirname + "/" + currImagename);
+            emit signalSendConsoleCommand(currDirname, "rm " + currImagename);
+            currImagename.remove("_gdeg_masked.tiff");
+            QVector2D sunPosition;
+            QVector2D sunDes;
+            sunPosition.setY((0+sunMap[currImagename].first)*Pi/180.0); //from right to counter-clockwise
+            sunPosition.setX(90.0-sunMap[currImagename].second);  //in deg horizon->zenith: 0->90
+            sunDes.setX(currImage.width()/2.0+(currImage.width()/2.0/90.0)*sunPosition.x()*cos(sunPosition.y()));
+            sunDes.setY(currImage.height()/2.0-(currImage.height()/2.0/90.0)*sunPosition.x()*sin(sunPosition.y()));
+            QPainter painter(&currImage);
+            QPen pen;
+            pen.setWidth(1);
+            pen.setColor(Qt::green);
+            painter.setPen(pen);
+            painter.drawPoint(QPointF(sunDes.x(), sunDes.y()));
+            painter.end();
+            currImage.save(currDirname + "/" + currImagename + "_gdeg_masked.tiff");
+
+            bool isGreenDot = false;
+            for(int i = 0; i < currImage.width(); i++){
+                for(int j = 0; j < currImage.height(); j++){
+                    QColor pixCol = currImage.pixelColor(i,j);
+                    if(pixCol == QColor(Qt::green))
+                        isGreenDot = true;
+                }
+            }
+            if(isGreenDot == false)
+                emit signalWriteToList(currImagename + " sun position not detected.");
+
+        }
+        QApplication::processEvents();
+        emit signalWriteToList("Sun positions added in " + currDirname + ".");
+    }
+    emit signalWriteToList("Sun positions ready.");
+}

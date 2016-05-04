@@ -1,13 +1,18 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#define Pi 3.1415926536
+
 #include <QMainWindow>
 #include <QDir>
 #include <QFileDialog>
 #include <QColor>
 #include <QFile>
 #include <QProcess>
-#include <QRegExp>
+#include <QTextStream>
+#include <QPainter>
+#include <QPen>
+#include <QVector2D>
 
 namespace Ui {
 class MainWindow;
@@ -33,6 +38,8 @@ private slots:
 
 
     void on_logPushButton_clicked();
+
+    void on_sunPushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
