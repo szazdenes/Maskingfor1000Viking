@@ -90,10 +90,10 @@ void MainWindow::on_movePushButton_clicked()
 
     foreach(QString currDirname, folderToImageListMap.keys()){
         foreach(QString currImagename, folderToImageListMap[currDirname]){
-            QStringList maskedList = QDir("/home/denes/Documents/Labor/Viking/maszkolt viking képek").entryList(QStringList("*_masked.tiff"), QDir::Files | QDir::NoDotAndDotDot);
+            QStringList maskedList = QDir("/home/denes/Documents/Labor/Viking/1000Viking/maszkolt viking képek").entryList(QStringList("*_masked.tiff"), QDir::Files | QDir::NoDotAndDotDot);
             foreach(QString currMask, maskedList){
                 if(currMask.split("_").first() == currImagename.split("_").first()){
-                    QFile file("/home/denes/Documents/Labor/Viking/maszkolt viking képek/" + currMask);
+                    QFile file("/home/denes/Documents/Labor/Viking/1000Viking/maszkolt viking képek/" + currMask);
                     emit signalSendConsoleCommand(currDirname, "rm " + currMask);
                     file.rename(currDirname + "/" + currMask);
                 }
@@ -125,23 +125,23 @@ void MainWindow::on_logPushButton_clicked()
             i--;
         }
     }
-    folderNameList.removeLast();
+//    folderNameList.removeLast();
 
     foreach(QString currentName, folderNameList){
-        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/2014-06/" + currentName + ".log");
-        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/2014-07/" + currentName + ".log");
-        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/2014-08/" + currentName + ".log");
-        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/2014-09/" + currentName + ".log");
-        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201410/" + currentName + ".log");
-        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201412/" + currentName + ".log");
-        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201501/" + currentName + ".log");
-        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201502/" + currentName + ".log");
-        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201503/" + currentName + ".log");
-        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201504/" + currentName + ".log");
-        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201505/" + currentName + ".log");
-        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201506/" + currentName + ".log");
-        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201508/" + currentName + ".log");
-        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201509/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/1000Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/2014-06/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/1000Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/2014-07/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/1000Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/2014-08/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/1000Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/2014-09/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/1000Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201410/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/1000Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201412/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/1000Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201501/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/1000Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201502/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/1000Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201503/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/1000Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201504/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/1000Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201505/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/1000Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201506/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/1000Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201508/" + currentName + ".log");
+        emit signalSendConsoleCommand("/home/denes/Documents/Labor/Viking/1000Viking/log_1000viking", "wget https://arago.elte.hu/szombathely/felho/201509/" + currentName + ".log");
         QApplication::processEvents();
         signalWriteToList(currentName + ".log downloaded.");
     }
