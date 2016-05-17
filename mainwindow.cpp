@@ -28,6 +28,8 @@ void MainWindow::on_maskPushButton_clicked()
     }
     emit signalWriteToList("Deglist and Masklist loaded.");
 
+    QImage bigMask("/home/denes/Documents/Labor/Viking/1000Viking/MaskingAndMovingToFolders/nagymaszk.png");
+
     if(degList.size() == maskList.size()){
         for(int i = 0; i < degList.size(); i++){
             QImage degIm(degList.at(i));
@@ -40,7 +42,8 @@ void MainWindow::on_maskPushButton_clicked()
                 for(int k = 0; k < degIm.height(); k++){
                     QColor maskcol = maskIm.pixel(j,k);
                     QColor degcol = degIm.pixel(j,k);
-                    if(maskcol == QColor(Qt::red) || degcol.blackF() >= 0.9 || degcol.blackF() <= 0.05){
+                    QColor bigMaskcol = bigMask.pixel(j,k);
+                    if(maskcol == QColor(Qt::red) || bigMaskcol == QColor(Qt::red) || degcol.blackF() >= 0.9 || degcol.blackF() <= 0.05){
                         if((degcol.blackF() >= 0.9 || degcol.blackF() <= 0.05) && maskcol != QColor(Qt::red))
                             degIm2.setPixelColor(j,k, QColor(Qt::green));
                         degIm.setPixelColor(j,k, QColor(Qt::red));
@@ -90,10 +93,10 @@ void MainWindow::on_movePushButton_clicked()
 
     foreach(QString currDirname, folderToImageListMap.keys()){
         foreach(QString currImagename, folderToImageListMap[currDirname]){
-            QStringList maskedList = QDir("/home/denes/Documents/Labor/Viking/1000Viking/újramaszkolás").entryList(QStringList("*_masked.tiff"), QDir::Files | QDir::NoDotAndDotDot);
+            QStringList maskedList = QDir("/home/denes/Documents/Labor/Viking/1000Viking/alma").entryList(QStringList("*_masked.tiff"), QDir::Files | QDir::NoDotAndDotDot);
             foreach(QString currMask, maskedList){
                 if(currMask.split("_").first() == currImagename.split("_").first()){
-                    QFile file("/home/denes/Documents/Labor/Viking/1000Viking/újramaszkolás/" + currMask);
+                    QFile file("/home/denes/Documents/Labor/Viking/1000Viking/alma/" + currMask);
                     emit signalSendConsoleCommand(currDirname, "rm " + currMask);
                     file.rename(currDirname + "/" + currMask);
                 }
