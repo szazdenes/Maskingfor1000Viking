@@ -28,7 +28,7 @@ void MainWindow::on_maskPushButton_clicked()
     }
     emit signalWriteToList("Deglist and Masklist loaded.");
 
-    QImage bigMask("/home/denes/Documents/Labor/Viking/1000Viking/MaskingAndMovingToFolders/nagymaszk.png");
+    QImage bigMask("/home/denes/Documents/Labor/Viking/1000Viking/MaskingAndMovingToFolders/nagymaszk1.png");
 
     if(degList.size() == maskList.size()){
         for(int i = 0; i < degList.size(); i++){
