@@ -93,10 +93,10 @@ void MainWindow::on_movePushButton_clicked()
 
     foreach(QString currDirname, folderToImageListMap.keys()){
         foreach(QString currImagename, folderToImageListMap[currDirname]){
-            QStringList maskedList = QDir("/home/denes/Documents/Labor/Viking/1000Viking/alma").entryList(QStringList("*_masked.tiff"), QDir::Files | QDir::NoDotAndDotDot);
+            QStringList maskedList = QDir("/home/denes/Documents/Labor/Viking/1000Viking/újramaszkolás").entryList(QStringList("*_masked.tiff"), QDir::Files | QDir::NoDotAndDotDot);
             foreach(QString currMask, maskedList){
                 if(currMask.split("_").first() == currImagename.split("_").first()){
-                    QFile file("/home/denes/Documents/Labor/Viking/1000Viking/alma/" + currMask);
+                    QFile file("/home/denes/Documents/Labor/Viking/1000Viking/újramaszkolás/" + currMask);
                     emit signalSendConsoleCommand(currDirname, "rm " + currMask);
                     file.rename(currDirname + "/" + currMask);
                 }
