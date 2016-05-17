@@ -44,7 +44,7 @@ void MainWindow::on_maskPushButton_clicked()
                     QColor degcol = degIm.pixel(j,k);
                     QColor bigMaskcol = bigMask.pixel(j,k);
                     if(maskcol == QColor(Qt::red) || bigMaskcol == QColor(Qt::red) || degcol.blackF() >= 0.9 || degcol.blackF() <= 0.05){
-                        if((degcol.blackF() >= 0.9 || degcol.blackF() <= 0.05) && maskcol != QColor(Qt::red))
+                        if((degcol.blackF() >= 0.9 || degcol.blackF() <= 0.05) && maskcol != QColor(Qt::red) && bigMaskcol != QColor(Qt::red))
                             degIm2.setPixelColor(j,k, QColor(Qt::green));
                         degIm.setPixelColor(j,k, QColor(Qt::red));
                     }
