@@ -29,7 +29,7 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0" colspan="2">
+    <item row="3" column="0" colspan="2">
      <widget class="QListWidget" name="listWidget"/>
     </item>
     <item row="1" column="0">
@@ -43,6 +43,20 @@
      <widget class="QPushButton" name="sunPushButton">
       <property name="text">
        <string>Detect sun</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="removePushButton">
+      <property name="text">
+       <string>Remove wrong pics</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QPushButton" name="replacePushButton">
+      <property name="text">
+       <string>Download replacement</string>
       </property>
      </widget>
     </item>
