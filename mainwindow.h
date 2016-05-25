@@ -37,7 +37,7 @@ private slots:
     void slotWriteToList(QString string);
     void on_movePushButton_clicked();
     void slotSendConsoleCommant(QString dirPath, QString cmd);
-    void slotSourceAndTarget(QString source, QString target);
+    void slotSourceAndTarget(QStringList sourceList);
 
 
     void on_logPushButton_clicked();

@@ -17,7 +17,7 @@ public:
     ~SourceAndTargetDialog();
 
 signals:
-    void signalSourceAndTarget(QString source, QString target);
+    void signalSourceAndTarget(QStringList source);
 
 private slots:
     void on_pushButton_clicked();
@@ -26,10 +26,9 @@ private slots:
 
     void on_sourcePushButton_clicked();
 
-    void on_targetPushButton_clicked();
-
 private:
     Ui::SourceAndTargetDialog *ui;
+    QStringList sourceList;
 };
 
 #endif // SOURCEANDTARGETDIALOG_H

@@ -117,89 +117,94 @@ void MainWindow::slotSendConsoleCommant(QString dirPath, QString cmd)
     proc.close();
 }
 
-void MainWindow::slotSourceAndTarget(QString source, QString target)
+void MainWindow::slotSourceAndTarget(QStringList sourceList)
 {
-    QFile sourceFile(source);
-    if(!sourceFile.open(QIODevice::ReadOnly | QIODevice::Text))
-        emit signalWriteToList("Sourcefile cannot be opened.");
+    foreach(QString source, sourceList){
+        QFile sourceFile(source);
+        if(!sourceFile.open(QIODevice::ReadOnly | QIODevice::Text))
+            emit signalWriteToList("Sourcefile cannot be opened.");
 
-    QString filename;
-    QStringList files;
-    QTextStream stream(&sourceFile);
-    while(!stream.atEnd()){
-        QString line = stream.readLine();
-        QTextStream linestream(&line);
-        linestream >> filename;
-        QString cloudFilename = filename;
-        filename.remove("_cloud.png");
-        QString colFilename = filename + "_col.png";
-        QString filename1 = filename + "_1.png";
-        QString filename2 = filename + "_2.png";
-        QString filename3 = filename + "_3.png";
-        QString logFilename = filename + ".log";
-        files.append(filename1);
-        files.append(filename2);
-        files.append(filename3);
-        files.append(cloudFilename);
-        files.append(colFilename);
-        files.append(logFilename);
+        QString filename;
+        QStringList files;
+        QTextStream stream(&sourceFile);
+        while(!stream.atEnd()){
+            QString line = stream.readLine();
+            QTextStream linestream(&line);
+            linestream >> filename;
+            QString cloudFilename = filename;
+            filename.remove("_cloud.png");
+            QString colFilename = filename + "_col.png";
+            QString filename1 = filename + "_1.png";
+            QString filename2 = filename + "_2.png";
+            QString filename3 = filename + "_3.png";
+            QString logFilename = filename + ".log";
+            files.append(filename1);
+            files.append(filename2);
+            files.append(filename3);
+            files.append(cloudFilename);
+            files.append(colFilename);
+            files.append(logFilename);
+        }
+        sourceFile.close();
+
+        QString target = source.remove(".txt");
+
+        foreach(QString currentfile, files){
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-06/cloud/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-07/cloud/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-08/cloud/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-09/cloud/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201410/cloud/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201412/cloud/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201501/cloud/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201502/cloud/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201503/cloud/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201504/cloud/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201505/cloud/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201506/cloud/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201508/cloud/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201509/cloud/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-06/col/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-07/col/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-08/col/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-09/col/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201410/col/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201412/col/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201501/col/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201502/col/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201503/col/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201504/col/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201505/col/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201506/col/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201508/col/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201509/col/" + currentfile);
+
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/2014-01/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/2014-05/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/2014-06/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/2014-07/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/2014-08/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/2014-09/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201410/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201411/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201412/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201501/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201502/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201503/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201504/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201505/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201506/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201507/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201508/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201509/" + currentfile);
+            emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201510/" + currentfile);
+            QApplication::processEvents();
+            signalWriteToList(currentfile + " downloaded to " + target);
+        }
+
+
+        emit signalWriteToList("All files downloaded.");
     }
-    sourceFile.close();
-
-    foreach(QString currentfile, files){
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-06/cloud/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-07/cloud/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-08/cloud/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-09/cloud/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201410/cloud/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201412/cloud/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201501/cloud/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201502/cloud/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201503/cloud/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201504/cloud/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201505/cloud/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201506/cloud/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201508/cloud/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201509/cloud/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-06/col/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-07/col/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-08/col/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/2014-09/col/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201410/col/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201412/col/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201501/col/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201502/col/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201503/col/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201504/col/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201505/col/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201506/col/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201508/col/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/felho/201509/col/" + currentfile);
-
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/2014-01/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/2014-05/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/2014-06/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/2014-07/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/2014-08/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/2014-09/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201410/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201411/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201412/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201501/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201502/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201503/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201504/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201505/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201506/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201507/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201508/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201509/" + currentfile);
-        emit signalSendConsoleCommand(target, "wget https://arago.elte.hu/szombathely/regimeresek/szombathely/201510/" + currentfile);
-        QApplication::processEvents();
-        signalWriteToList(currentfile + " downloaded to " + target);
-    }
-
-    emit signalWriteToList("All files downloaded.");
 }
 
 void MainWindow::on_logPushButton_clicked()
