@@ -14,6 +14,8 @@
 #include <QPen>
 #include <QVector2D>
 
+#include "sourceandtargetdialog.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -35,6 +37,7 @@ private slots:
     void slotWriteToList(QString string);
     void on_movePushButton_clicked();
     void slotSendConsoleCommant(QString dirPath, QString cmd);
+    void slotSourceAndTarget(QString source, QString target);
 
 
     void on_logPushButton_clicked();
@@ -42,6 +45,8 @@ private slots:
     void on_sunPushButton_clicked();
 
     void on_removePushButton_clicked();
+
+    void on_replacePushButton_clicked();
 
 private:
     Ui::MainWindow *ui;

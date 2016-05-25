@@ -18,8 +18,11 @@ UI_DIR = ./ui
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    sourceandtargetdialog.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    sourceandtargetdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    sourceandtargetdialog.ui
