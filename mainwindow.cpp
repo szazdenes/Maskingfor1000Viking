@@ -224,3 +224,46 @@ void MainWindow::on_sunPushButton_clicked()
     }
     emit signalWriteToList("Sun positions ready.");
 }
+
+void MainWindow::on_removePushButton_clicked()
+{
+    QFile wrongFile("/home/denes/Documents/Labor/Viking/1000Viking/MaskingAndMovingToFolders/listToBeRemoved.dat");
+    if(!wrongFile.open(QIODevice::ReadOnly | QIODevice::Text))
+        emit signalWriteToList("listToBeRemoved.dat cannot be opened.");
+
+    QStringList toRemove;
+    QString filename;
+    QTextStream stream(&wrongFile);
+    while(!stream.atEnd()){
+        filename = stream.readLine();
+        filename.append("*");
+        toRemove.append(filename);
+    }
+    wrongFile.close();
+
+    QMap<QString, QStringList> folderToImageListMap;
+    QDir folder = QFileDialog::getExistingDirectory();
+    QStringList folderNameList = folder.entryList(QStringList(), QDir::Dirs | QDir::NoDotAndDotDot);
+
+    for(int i = 0; i < folderNameList.size(); i++){
+        QString currentfolder = folderNameList.at(i);
+        folderNameList.replace(i, folder.absolutePath() + "/" + currentfolder);
+    }
+
+    foreach(QString currentFolder, folderNameList){
+        if(!currentFolder.contains("maszkolni")){
+            QDir currDir(currentFolder);
+            folderToImageListMap[currentFolder] = currDir.entryList(QStringList(toRemove), QDir::Files | QDir::NoDotAndDotDot);
+        }
+    }
+
+    foreach(QString currDirname, folderToImageListMap.keys()){
+        foreach(QString currImagename, folderToImageListMap[currDirname]){
+            emit signalSendConsoleCommand(currDirname, "rm " + currImagename);
+            QApplication::processEvents();
+            emit signalWriteToList(currImagename + " removed from " + currDirname + ".");
+        }
+    }
+
+    emit signalWriteToList("Wrong files removed.");
+}

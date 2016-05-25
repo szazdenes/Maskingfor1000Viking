@@ -41,6 +41,8 @@ private slots:
 
     void on_sunPushButton_clicked();
 
+    void on_removePushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
