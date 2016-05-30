@@ -75,8 +75,12 @@ void MainWindow::slotWriteToList(QString string)
 
 void MainWindow::on_movePushButton_clicked()
 {
+    SetSourceAndTargetDialog dialog(this, SourceFolder, targetFolder);
+    connect(&dialog, &SetSourceAndTargetDialog::signalSendSourceAndTarget, this, &MainWindow::slotGetSourceAndTarget);
+    dialog.exec();
+
     QMap<QString, QStringList> folderToImageListMap;
-    QDir folder = QFileDialog::getExistingDirectory();
+    QDir folder = QDir(targetFolder);
     QStringList folderNameList = folder.entryList(QStringList(), QDir::Dirs | QDir::NoDotAndDotDot);
 
     for(int i = 0; i < folderNameList.size(); i++){
@@ -93,10 +97,10 @@ void MainWindow::on_movePushButton_clicked()
 
     foreach(QString currDirname, folderToImageListMap.keys()){
         foreach(QString currImagename, folderToImageListMap[currDirname]){
-            QStringList maskedList = QDir("/home/denes/Documents/Labor/Viking/1000Viking/újramaszkolás").entryList(QStringList("*_masked.tiff"), QDir::Files | QDir::NoDotAndDotDot);
+            QStringList maskedList = QDir(SourceFolder).entryList(QStringList("*_masked.tiff"), QDir::Files | QDir::NoDotAndDotDot);
             foreach(QString currMask, maskedList){
                 if(currMask.split("_").first() == currImagename.split("_").first()){
-                    QFile file("/home/denes/Documents/Labor/Viking/1000Viking/újramaszkolás/" + currMask);
+                    QFile file(SourceFolder + "/" + currMask);
                     emit signalSendConsoleCommand(currDirname, "rm " + currMask);
                     file.rename(currDirname + "/" + currMask);
                 }
@@ -205,6 +209,12 @@ void MainWindow::slotSourceAndTarget(QStringList sourceList)
 
         emit signalWriteToList("All files downloaded.");
     }
+}
+
+void MainWindow::slotGetSourceAndTarget(QString source, QString target)
+{
+    SourceFolder = source;
+    targetFolder = target;
 }
 
 void MainWindow::on_logPushButton_clicked()

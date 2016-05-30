@@ -15,6 +15,7 @@
 #include <QVector2D>
 
 #include "sourceandtargetdialog.h"
+#include "setsourceandtargetdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -38,6 +39,7 @@ private slots:
     void on_movePushButton_clicked();
     void slotSendConsoleCommant(QString dirPath, QString cmd);
     void slotSourceAndTarget(QStringList sourceList);
+    void slotGetSourceAndTarget(QString source, QString target);
 
 
     void on_logPushButton_clicked();
@@ -50,6 +52,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QString SourceFolder, targetFolder;
 
 };
 
