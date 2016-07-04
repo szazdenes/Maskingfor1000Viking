@@ -29,7 +29,7 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="0" colspan="2">
+    <item row="4" column="0" colspan="2">
      <widget class="QListWidget" name="listWidget"/>
     </item>
     <item row="1" column="0">
@@ -57,6 +57,13 @@
      <widget class="QPushButton" name="replacePushButton">
       <property name="text">
        <string>Download replacement</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QPushButton" name="chSubhorizonPushButton">
+      <property name="text">
+       <string>Check subhorizon</string>
       </property>
      </widget>
     </item>

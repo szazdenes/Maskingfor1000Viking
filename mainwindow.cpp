@@ -374,3 +374,43 @@ void MainWindow::on_replacePushButton_clicked()
     connect(&sourceAndTargetDialog, &SourceAndTargetDialog::signalSourceAndTarget, this, &MainWindow::slotSourceAndTarget);
     sourceAndTargetDialog.exec();
 }
+
+void MainWindow::on_chSubhorizonPushButton_clicked()
+{
+    QStringList subhorizonFolders = QDir("/home/denes/Documents/Labor/Viking/1000Viking/subhorizon").entryList(QStringList("*_ok"), QDir::Dirs | QDir::NoDotAndDotDot);
+    QMap<QString, QStringList> folderToSubhorizonFilesMap;
+    foreach(QString currentFolder, subhorizonFolders){
+        folderToSubhorizonFilesMap[currentFolder] = QDir("/home/denes/Documents/Labor/Viking/1000Viking/subhorizon/" + currentFolder).entryList(QStringList("*.log"), QDir::Files | QDir::NoDotAndDotDot);
+        emit signalWriteToList(currentFolder + " contains " + QString::number(folderToSubhorizonFilesMap[currentFolder].size()) + " files.");
+    }
+
+    QStringList fileList, identicalFiles;
+
+    foreach(QString currentKey, folderToSubhorizonFilesMap.keys())
+        fileList.append(folderToSubhorizonFilesMap[currentKey]);
+
+    for(int i = 0; i < fileList.size(); i++){
+        for(int j = 0; j < fileList.size(); j++){
+            if(j > i && fileList.at(i) == fileList.at(j)){
+                identicalFiles.append(fileList.at(i));
+            }
+        }
+    }
+
+    foreach(QString currentIdentical, identicalFiles){
+        emit signalWriteToList(currentIdentical + " is present in the following folders:");
+        foreach(QString currentKey, folderToSubhorizonFilesMap.keys()){
+            foreach(QString currentFile, folderToSubhorizonFilesMap[currentKey]){
+                if(currentFile == currentIdentical)
+                    emit signalWriteToList(currentKey);
+                QApplication::processEvents();
+            }
+        }
+    }
+
+    emit signalWriteToList("Identical files found. Ready.");
+
+
+
+
+}
