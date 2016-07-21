@@ -414,3 +414,197 @@ void MainWindow::on_chSubhorizonPushButton_clicked()
 
 
 }
+
+void MainWindow::on_ultimateResultsPushButton_clicked()
+{
+    QMap<QString, QStringList> allResultsMap;
+    QStringList resultFileNameList = QDir("/home/denes/Documents/Labor/Viking/1000Viking/Results").entryList(QDir::Files | QDir::NoDotAndDotDot);
+    foreach(QString currentfile, resultFileNameList){
+        if(!currentfile.endsWith("~")){
+            QFile openfile(QDir("/home/denes/Documents/Labor/Viking/1000Viking/Results").absoluteFilePath(currentfile));
+            if(!openfile.open(QIODevice::ReadOnly | QIODevice::Text))
+                emit signalWriteToList(currentfile + " cannot be opened.");
+            QTextStream stream(&openfile);
+            while(!stream.atEnd()){
+                currentfile.remove(".csv");
+                QString currentLine = stream.readLine();
+                if(!currentLine.startsWith("#"))
+                    allResultsMap[currentfile].append(currentLine);
+            }
+
+            openfile.close();
+        }
+
+    }
+
+    QString name, NE, FWHM;
+    QFile outfile;
+    int num = 0;
+    QDir outFolder("/home/denes/Documents/Labor/Viking/1000Viking/Ultimate results");
+    foreach(QString currentKey, allResultsMap.keys()){
+        foreach(QString currentString, allResultsMap[currentKey]){
+            QStringList splitCurrentString = currentString.split("\t");
+            name = splitCurrentString.takeFirst();
+            NE = splitCurrentString.takeFirst();
+            FWHM = splitCurrentString.takeFirst();
+            if(name.contains("_cal") && name.contains("_sol") && name.contains("_am")){
+                outfile.setFileName(outFolder.absolutePath() + "/cal_sol_am.csv");
+                QTextStream out(&outfile);
+                if(!outfile.exists()){
+                    outfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    out << "#elevation\tcloud\tNE\tFWHM\n";
+                }
+                if(outfile.exists())
+                    outfile.open(QIODevice::Append | QIODevice::Text);
+                out << currentKey.split("-").first() + "\t" + currentKey.split("-").last() + "\t" + NE + "\t" + FWHM + "\n";
+                outfile.close();
+            }
+
+            if(name.contains("_cal") && name.contains("_sol") && name.contains("_pm")){
+                outfile.setFileName(outFolder.absolutePath() + "/cal_sol_pm.csv");
+                QTextStream out(&outfile);
+                if(!outfile.exists()){
+                    outfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    out << "#elevation\tcloud\tNE\tFWHM\n";
+                }
+                if(outfile.exists())
+                    outfile.open(QIODevice::Append | QIODevice::Text);
+                out << currentKey.split("-").first() + "\t" + currentKey.split("-").last() + "\t" + NE + "\t" + FWHM + "\n";
+                outfile.close();
+            }
+
+            if(name.contains("_cal") && name.contains("_equ") && name.contains("_am")){
+                outfile.setFileName(outFolder.absolutePath() + "/cal_equ_am.csv");
+                QTextStream out(&outfile);
+                if(!outfile.exists()){
+                    outfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    out << "#elevation\tcloud\tNE\tFWHM\n";
+                }
+                if(outfile.exists())
+                    outfile.open(QIODevice::Append | QIODevice::Text);
+                out << currentKey.split("-").first() + "\t" + currentKey.split("-").last() + "\t" + NE + "\t" + FWHM + "\n";
+                outfile.close();
+            }
+
+            if(name.contains("_cal") && name.contains("_equ") && name.contains("_pm")){
+                outfile.setFileName(outFolder.absolutePath() + "/cal_equ_pm.csv");
+                QTextStream out(&outfile);
+                if(!outfile.exists()){
+                    outfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    out << "#elevation\tcloud\tNE\tFWHM\n";
+                }
+                if(outfile.exists())
+                    outfile.open(QIODevice::Append | QIODevice::Text);
+                out << currentKey.split("-").first() + "\t" + currentKey.split("-").last() + "\t" + NE + "\t" + FWHM + "\n";
+                outfile.close();
+            }
+
+            if(name.contains("_cord") && name.contains("_sol") && name.contains("_am")){
+                outfile.setFileName(outFolder.absolutePath() + "/cord_sol_am.csv");
+                QTextStream out(&outfile);
+                if(!outfile.exists()){
+                    outfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    out << "#elevation\tcloud\tNE\tFWHM\n";
+                }
+                if(outfile.exists())
+                    outfile.open(QIODevice::Append | QIODevice::Text);
+                out << currentKey.split("-").first() + "\t" + currentKey.split("-").last() + "\t" + NE + "\t" + FWHM + "\n";
+                outfile.close();
+            }
+
+            if(name.contains("_cord") && name.contains("_sol") && name.contains("_pm")){
+                outfile.setFileName(outFolder.absolutePath() + "/cord_sol_pm.csv");
+                QTextStream out(&outfile);
+                if(!outfile.exists()){
+                    outfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    out << "#elevation\tcloud\tNE\tFWHM\n";
+                }
+                if(outfile.exists())
+                    outfile.open(QIODevice::Append | QIODevice::Text);
+                out << currentKey.split("-").first() + "\t" + currentKey.split("-").last() + "\t" + NE + "\t" + FWHM + "\n";
+                outfile.close();
+            }
+
+            if(name.contains("_cord") && name.contains("_equ") && name.contains("_am")){
+                outfile.setFileName(outFolder.absolutePath() + "/cord_equ_am.csv");
+                QTextStream out(&outfile);
+                if(!outfile.exists()){
+                    outfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    out << "#elevation\tcloud\tNE\tFWHM\n";
+                }
+                if(outfile.exists())
+                    outfile.open(QIODevice::Append | QIODevice::Text);
+                out << currentKey.split("-").first() + "\t" + currentKey.split("-").last() + "\t" + NE + "\t" + FWHM + "\n";
+                outfile.close();
+            }
+
+            if(name.contains("_cord") && name.contains("_equ") && name.contains("_pm")){
+                outfile.setFileName(outFolder.absolutePath() + "/cord_equ_pm.csv");
+                QTextStream out(&outfile);
+                if(!outfile.exists()){
+                    outfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    out << "#elevation\tcloud\tNE\tFWHM\n";
+                }
+                if(outfile.exists())
+                    outfile.open(QIODevice::Append | QIODevice::Text);
+                out << currentKey.split("-").first() + "\t" + currentKey.split("-").last() + "\t" + NE + "\t" + FWHM + "\n";
+                outfile.close();
+            }
+
+            if(name.contains("_tour") && name.contains("_sol") && name.contains("_am")){
+                outfile.setFileName(outFolder.absolutePath() + "/tour_sol_am.csv");
+                QTextStream out(&outfile);
+                if(!outfile.exists()){
+                    outfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    out << "#elevation\tcloud\tNE\tFWHM\n";
+                }
+                if(outfile.exists())
+                    outfile.open(QIODevice::Append | QIODevice::Text);
+                out << currentKey.split("-").first() + "\t" + currentKey.split("-").last() + "\t" + NE + "\t" + FWHM + "\n";
+                outfile.close();
+            }
+
+            if(name.contains("_tour") && name.contains("_sol") && name.contains("_pm")){
+                outfile.setFileName(outFolder.absolutePath() + "/tour_sol_pm.csv");
+                QTextStream out(&outfile);
+                if(!outfile.exists()){
+                    outfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    out << "#elevation\tcloud\tNE\tFWHM\n";
+                }
+                if(outfile.exists())
+                    outfile.open(QIODevice::Append | QIODevice::Text);
+                out << currentKey.split("-").first() + "\t" + currentKey.split("-").last() + "\t" + NE + "\t" + FWHM + "\n";
+                outfile.close();
+            }
+
+            if(name.contains("_tour") && name.contains("_equ") && name.contains("_am")){
+                outfile.setFileName(outFolder.absolutePath() + "/tour_equ_am.csv");
+                QTextStream out(&outfile);
+                if(!outfile.exists()){
+                    outfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    out << "#elevation\tcloud\tNE\tFWHM\n";
+                }
+                if(outfile.exists())
+                    outfile.open(QIODevice::Append | QIODevice::Text);
+                out << currentKey.split("-").first() + "\t" + currentKey.split("-").last() + "\t" + NE + "\t" + FWHM + "\n";
+                outfile.close();
+            }
+
+            if(name.contains("_tour") && name.contains("_equ") && name.contains("_pm")){
+                outfile.setFileName(outFolder.absolutePath() + "/tour_equ_pm.csv");
+                QTextStream out(&outfile);
+                if(!outfile.exists()){
+                    outfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    out << "#elevation\tcloud\tNE\tFWHM\n";
+                }
+                if(outfile.exists())
+                    outfile.open(QIODevice::Append | QIODevice::Text);
+                out << currentKey.split("-").first() + "\t" + currentKey.split("-").last() + "\t" + NE + "\t" + FWHM + "\n";
+                outfile.close();
+            }
+        }
+        QApplication::processEvents();
+        num++;
+        emit signalWriteToList(QString::number(num) + "/90 files ready.");
+    }
+}

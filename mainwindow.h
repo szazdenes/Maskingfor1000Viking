@@ -52,6 +52,8 @@ private slots:
 
     void on_chSubhorizonPushButton_clicked();
 
+    void on_ultimateResultsPushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString SourceFolder, targetFolder;
