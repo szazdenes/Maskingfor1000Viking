@@ -670,7 +670,8 @@ void MainWindow::on_averagedUltimateResultsPushButton_clicked()
 
         for(int k = 5; k <= 50; k+=5){
             for(int l = 0; l <= 8; l++){
-                out << QString::number(k) + "\t" + QString::number(l) + "\t" + QString::number(sumNE[QString::number(k) + " " + QString::number(l)] / num[QString::number(k) + " " + QString::number(l)]) + "\t" + QString::number(sqrt(sumFWHM[QString::number(k) + " " + QString::number(l)] / num[QString::number(k) + " " + QString::number(l)])) + "\n";
+                if(sumNE.keys().contains(QString::number(k) + " " + QString::number(l)))
+                    out << QString::number(k) + "\t" + QString::number(l) + "\t" + QString::number(sumNE[QString::number(k) + " " + QString::number(l)] / num[QString::number(k) + " " + QString::number(l)]) + "\t" + QString::number(sqrt(sumFWHM[QString::number(k) + " " + QString::number(l)] / num[QString::number(k) + " " + QString::number(l)])) + "\n";
             }
         }
         QApplication::processEvents();
