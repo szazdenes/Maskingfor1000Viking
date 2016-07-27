@@ -608,3 +608,73 @@ void MainWindow::on_ultimateResultsPushButton_clicked()
         emit signalWriteToList(QString::number(num) + "/90 files ready.");
     }
 }
+
+void MainWindow::on_averagedUltimateResultsPushButton_clicked()
+{
+    QMap<QString, QStringList> ultimateResultsMap;
+    QStringList ultimateResultFileNameList = QDir("/home/denes/Documents/Labor/Viking/1000Viking/Ultimate results").entryList(QStringList("*.csv"), QDir::Files | QDir::NoDotAndDotDot);
+    foreach(QString currentfile, ultimateResultFileNameList){
+        if(!currentfile.endsWith("~")){
+            QFile openfile(QDir("/home/denes/Documents/Labor/Viking/1000Viking/Ultimate results").absoluteFilePath(currentfile));
+            if(!openfile.open(QIODevice::ReadOnly | QIODevice::Text))
+                emit signalWriteToList(currentfile + " cannot be opened.");
+            QTextStream stream(&openfile);
+            while(!stream.atEnd()){
+                currentfile.remove(".csv");
+                QString currentLine = stream.readLine();
+                if(!currentLine.startsWith("#"))
+                    ultimateResultsMap[currentfile].append(currentLine);
+            }
+
+            openfile.close();
+        }
+
+    }
+
+    QFile outfile;
+    QMap<QString, double> num, sumNE, sumFWHM;
+    QDir outFolder("/home/denes/Documents/Labor/Viking/1000Viking/Ultimate results");
+    for(int i = 0; i < ultimateResultsMap.keys().size(); i++){
+        QString currentKey = ultimateResultsMap.keys().at(i);
+        for(int j = 0; j < ultimateResultsMap[currentKey].size(); j++){
+            QString currentString = ultimateResultsMap[currentKey].at(j);
+            QString elevStr = currentString.split("\t").at(0);
+            QString cloudStr = currentString.split("\t").at(1);
+            QString NEStr = currentString.split("\t").at(2);
+            QString FWHMStr = currentString.split("\t").at(3);
+            double elev = elevStr.toDouble();
+            double cloud = cloudStr.toDouble();
+            double NE = NEStr.toDouble();
+            double FWHM = FWHMStr.toDouble();
+
+            outfile.close();
+            for(int k = 5; k <= 50; k+=5){
+                for(int l = 0; l <= 8; l++){
+                    if(elev == k && cloud == l){
+                       sumNE[QString::number(k) + " " + QString::number(l)] += NE;
+                       sumFWHM[QString::number(k) + " " + QString::number(l)] += pow(FWHM, 2);
+                       num[QString::number(k) + " " + QString::number(l)]++;
+                    }
+                }
+            }
+
+        }
+        outfile.setFileName(outFolder.absolutePath() + "/" + currentKey + "_ave.csv");
+        QTextStream out(&outfile);
+        if(!outfile.exists()){
+            outfile.open(QIODevice::WriteOnly | QIODevice::Text);
+            out << "#elevation\tcloud\tNE\tFWHM\n";
+        }
+        if(outfile.exists())
+            outfile.open(QIODevice::Append | QIODevice::Text);
+
+        for(int k = 5; k <= 50; k+=5){
+            for(int l = 0; l <= 8; l++){
+                out << QString::number(k) + "\t" + QString::number(l) + "\t" + QString::number(sumNE[QString::number(k) + " " + QString::number(l)] / num[QString::number(k) + " " + QString::number(l)]) + "\t" + QString::number(sqrt(sumFWHM[QString::number(k) + " " + QString::number(l)] / num[QString::number(k) + " " + QString::number(l)])) + "\n";
+            }
+        }
+        QApplication::processEvents();
+        emit signalWriteToList(currentKey + "_ave.csv created.");
+    }
+    emit signalWriteToList("Average calculations ready.");
+}

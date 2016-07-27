@@ -54,6 +54,8 @@ private slots:
 
     void on_ultimateResultsPushButton_clicked();
 
+    void on_averagedUltimateResultsPushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString SourceFolder, targetFolder;
