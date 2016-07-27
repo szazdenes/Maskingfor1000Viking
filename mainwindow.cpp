@@ -674,6 +674,9 @@ void MainWindow::on_averagedUltimateResultsPushButton_clicked()
                     out << QString::number(k) + "\t" + QString::number(l) + "\t" + QString::number(sumNE[QString::number(k) + " " + QString::number(l)] / num[QString::number(k) + " " + QString::number(l)]) + "\t" + QString::number(sqrt(sumFWHM[QString::number(k) + " " + QString::number(l)] / num[QString::number(k) + " " + QString::number(l)])) + "\n";
             }
         }
+        sumNE.clear();
+        sumFWHM.clear();
+        num.clear();
         QApplication::processEvents();
         emit signalWriteToList(currentKey + "_ave.csv created.");
     }
