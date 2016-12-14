@@ -100,7 +100,7 @@ void MainWindow::on_movePushButton_clicked()
 
     foreach(QString currDirname, folderToImageListMap.keys()){
         foreach(QString currImagename, folderToImageListMap[currDirname]){
-            QStringList maskedList = QDir(SourceFolder).entryList(QStringList("*_masked.tiff"), QDir::Files | QDir::NoDotAndDotDot);
+            QStringList maskedList = QDir(SourceFolder).entryList(QStringList("*gdir_masked.tiff"), QDir::Files | QDir::NoDotAndDotDot);
             foreach(QString currMask, maskedList){
                 if(currMask.split("_").first() == currImagename.split("_").first()){
                     QFile file(SourceFolder + "/" + currMask);
