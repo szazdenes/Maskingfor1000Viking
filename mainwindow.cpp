@@ -21,7 +21,7 @@ void MainWindow::on_maskPushButton_clicked()
     QStringList nameList = folder.entryList(QStringList(), QDir::Files | QDir::NoDotAndDotDot);
     QStringList degList, maskList;
     foreach(QString name, nameList){
-        if(name.contains("_gdeg.tiff"))
+        if(name.contains("_gdir.tiff"))
             degList.append(folder.absoluteFilePath(name));
         if(name.contains("_mask.tiff"))
             maskList.append(folder.absoluteFilePath(name));
@@ -283,7 +283,7 @@ void MainWindow::on_sunPushButton_clicked()
     foreach(QString currentFolder, folderNameList){
         if(!currentFolder.contains("maszkolni")){
             QDir currDir(currentFolder);
-            folderToImageListMap[currentFolder] = currDir.entryList(QStringList("*_gdeg_masked.tiff"), QDir::Files | QDir::NoDotAndDotDot);
+            folderToImageListMap[currentFolder] = currDir.entryList(QStringList("*_gdir_masked.tiff"), QDir::Files | QDir::NoDotAndDotDot);
         }
     }
 
@@ -291,7 +291,7 @@ void MainWindow::on_sunPushButton_clicked()
         foreach(QString currImagename, folderToImageListMap[currDirname]){
             QImage currImage(currDirname + "/" + currImagename);
             emit signalSendConsoleCommand(currDirname, "rm " + currImagename);
-            currImagename.remove("_gdeg_masked.tiff");
+            currImagename.remove("_gdir_masked.tiff");
             QVector2D sunPosition;
             QVector2D sunDes;
             sunPosition.setY((0+sunMap[currImagename].first)*Pi/180.0); //from right to counter-clockwise
@@ -305,7 +305,7 @@ void MainWindow::on_sunPushButton_clicked()
             painter.setPen(pen);
             painter.drawPoint(QPointF(sunDes.x(), sunDes.y()));
             painter.end();
-            currImage.save(currDirname + "/" + currImagename + "_gdeg_masked.tiff");
+            currImage.save(currDirname + "/" + currImagename + "_gdir_masked.tiff");
 
             bool isGreenDot = false;
             for(int i = 0; i < currImage.width(); i++){
