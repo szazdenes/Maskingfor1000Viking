@@ -304,7 +304,7 @@ void MainWindow::on_sunPushButton_clicked()
             QPainter painter(&currImage);
             QPen pen;
             pen.setWidth(1);
-            pen.setColor(Qt::green);
+            pen.setColor(Qt::black);
             painter.setPen(pen);
             painter.drawPoint(QPointF(sunDes.x(), sunDes.y()));
             painter.end();
