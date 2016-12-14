@@ -19,10 +19,12 @@ void MainWindow::on_maskPushButton_clicked()
 {
     QDir folder = QFileDialog::getExistingDirectory();
     QStringList nameList = folder.entryList(QStringList(), QDir::Files | QDir::NoDotAndDotDot);
-    QStringList degList, maskList;
+    QStringList degList, dirList, maskList;
     foreach(QString name, nameList){
-        if(name.contains("_gdir.tiff"))
+        if(name.contains("_gdeg.tiff"))
             degList.append(folder.absoluteFilePath(name));
+        if(name.contains("_gdir.tiff"))
+            dirList.append(folder.absoluteFilePath(name));
         if(name.contains("_mask.tiff"))
             maskList.append(folder.absoluteFilePath(name));
     }
@@ -33,9 +35,10 @@ void MainWindow::on_maskPushButton_clicked()
     if(degList.size() == maskList.size()){
         for(int i = 0; i < degList.size(); i++){
             QImage degIm(degList.at(i));
-            QImage degIm2(degList.at(i));
+            QImage dirIm(dirList.at(i));
+            QImage dirIm2(dirList.at(i));
             QImage maskIm(maskList.at(i));
-            QString maskedName = degList.at(i);
+            QString maskedName = dirList.at(i);
             maskedName.remove(".tiff");
 
             for(int j = 0; j < degIm.width(); j++){
@@ -45,16 +48,16 @@ void MainWindow::on_maskPushButton_clicked()
                     QColor bigMaskcol = bigMask.pixel(j,k);
                     if(maskcol == QColor(Qt::red) || bigMaskcol == QColor(Qt::red) || degcol.blackF() >= 0.9 || degcol.blackF() <= 0.05){
                         if((degcol.blackF() >= 0.9 || degcol.blackF() <= 0.05) && maskcol != QColor(Qt::red) && bigMaskcol != QColor(Qt::red))
-                            degIm2.setPixelColor(j,k, QColor(Qt::green));
-                        degIm.setPixelColor(j,k, QColor(Qt::white));
+                            dirIm2.setPixelColor(j,k, QColor(Qt::black));
+                        dirIm.setPixelColor(j,k, QColor(Qt::white));
                     }
                 }
             }
             QApplication::processEvents();
             if(100*i/degList.size() != 100*(i+1)/degList.size())
                 emit signalWriteToList("Masking " + QString::number(100*i/degList.size()) + " % ready.");
-            degIm.save(maskedName + "_masked.tiff");
-            degIm2.save(maskedName + "_motionartefact_masked.tiff");
+            dirIm.save(maskedName + "_masked.tiff");
+            dirIm2.save(maskedName + "_motionartefact_masked.tiff");
         }
     }
     else
@@ -311,7 +314,7 @@ void MainWindow::on_sunPushButton_clicked()
             for(int i = 0; i < currImage.width(); i++){
                 for(int j = 0; j < currImage.height(); j++){
                     QColor pixCol = currImage.pixelColor(i,j);
-                    if(pixCol == QColor(Qt::green))
+                    if(pixCol == QColor(Qt::black))
                         isGreenDot = true;
                 }
             }
