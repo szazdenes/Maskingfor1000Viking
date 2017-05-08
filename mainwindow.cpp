@@ -421,10 +421,13 @@ void MainWindow::on_chSubhorizonPushButton_clicked()
 void MainWindow::on_ultimateResultsPushButton_clicked()
 {
     QMap<QString, QStringList> allResultsMap;
-    QStringList resultFileNameList = QDir("/home/denes/Documents/Labor/Viking/1000Viking/Results").entryList(QDir::Files | QDir::NoDotAndDotDot);
+    QString sourceFolder = "/home/denes/Documents/Labor/Viking/1000Viking/Results/new";
+    QString destinationFolder = "/home/denes/Documents/Labor/Viking/1000Viking/Ultimate results/data_new";
+
+    QStringList resultFileNameList = QDir(sourceFolder).entryList(QDir::Files | QDir::NoDotAndDotDot);
     foreach(QString currentfile, resultFileNameList){
         if(!currentfile.endsWith("~")){
-            QFile openfile(QDir("/home/denes/Documents/Labor/Viking/1000Viking/Results").absoluteFilePath(currentfile));
+            QFile openfile(QDir(sourceFolder).absoluteFilePath(currentfile));
             if(!openfile.open(QIODevice::ReadOnly | QIODevice::Text))
                 emit signalWriteToList(currentfile + " cannot be opened.");
             QTextStream stream(&openfile);
@@ -443,7 +446,7 @@ void MainWindow::on_ultimateResultsPushButton_clicked()
     QString name, NE, FWHM;
     QFile outfile;
     int num = 0;
-    QDir outFolder("/home/denes/Documents/Labor/Viking/1000Viking/Ultimate results");
+    QDir outFolder(destinationFolder);
     foreach(QString currentKey, allResultsMap.keys()){
         foreach(QString currentString, allResultsMap[currentKey]){
             QStringList splitCurrentString = currentString.split("\t");
@@ -614,11 +617,13 @@ void MainWindow::on_ultimateResultsPushButton_clicked()
 
 void MainWindow::on_averagedUltimateResultsPushButton_clicked()
 {
+    QString destinationFolder = "/home/denes/Documents/Labor/Viking/1000Viking/Ultimate results/data_new";
+
     QMap<QString, QStringList> ultimateResultsMap;
-    QStringList ultimateResultFileNameList = QDir("/home/denes/Documents/Labor/Viking/1000Viking/Ultimate results").entryList(QStringList("*.csv"), QDir::Files | QDir::NoDotAndDotDot);
+    QStringList ultimateResultFileNameList = QDir(destinationFolder).entryList(QStringList("*.csv"), QDir::Files | QDir::NoDotAndDotDot);
     foreach(QString currentfile, ultimateResultFileNameList){
         if(!currentfile.endsWith("~")){
-            QFile openfile(QDir("/home/denes/Documents/Labor/Viking/1000Viking/Ultimate results").absoluteFilePath(currentfile));
+            QFile openfile(QDir(destinationFolder).absoluteFilePath(currentfile));
             if(!openfile.open(QIODevice::ReadOnly | QIODevice::Text))
                 emit signalWriteToList(currentfile + " cannot be opened.");
             QTextStream stream(&openfile);
@@ -636,7 +641,7 @@ void MainWindow::on_averagedUltimateResultsPushButton_clicked()
 
     QFile outfile;
     QMap<QString, double> num, sumNE, sumFWHM;
-    QDir outFolder("/home/denes/Documents/Labor/Viking/1000Viking/Ultimate results");
+    QDir outFolder(destinationFolder);
     for(int i = 0; i < ultimateResultsMap.keys().size(); i++){
         QString currentKey = ultimateResultsMap.keys().at(i);
         for(int j = 0; j < ultimateResultsMap[currentKey].size(); j++){
