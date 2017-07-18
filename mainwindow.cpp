@@ -622,7 +622,7 @@ void MainWindow::on_averagedUltimateResultsPushButton_clicked()
     QMap<QString, QStringList> ultimateResultsMap;
     QStringList ultimateResultFileNameList = QDir(destinationFolder).entryList(QStringList("*.csv"), QDir::Files | QDir::NoDotAndDotDot);
     foreach(QString currentfile, ultimateResultFileNameList){
-        if(!currentfile.endsWith("~")){
+        if(!currentfile.endsWith("~") && !currentfile.contains("ave")){
             QFile openfile(QDir(destinationFolder).absoluteFilePath(currentfile));
             if(!openfile.open(QIODevice::ReadOnly | QIODevice::Text))
                 emit signalWriteToList(currentfile + " cannot be opened.");
@@ -655,13 +655,12 @@ void MainWindow::on_averagedUltimateResultsPushButton_clicked()
             double NE = NEStr.toDouble();
             double FWHM = FWHMStr.toDouble();
 
-            outfile.close();
             for(int k = 5; k <= 50; k+=5){
                 for(int l = 0; l <= 8; l++){
                     if(elev == k && cloud == l){
                        sumNE[QString::number(k) + " " + QString::number(l)] += NE/pow(FWHM, 2);
 //                       sumFWHM[QString::number(k) + " " + QString::number(l)] += pow(FWHM, 2);
-                       num[QString::number(k) + " " + QString::number(l)] = 1.0/pow(FWHM, 2);
+                       num[QString::number(k) + " " + QString::number(l)] += (double)1.0/pow(FWHM, 2);
                     }
                 }
             }
@@ -679,9 +678,10 @@ void MainWindow::on_averagedUltimateResultsPushButton_clicked()
         for(int k = 5; k <= 50; k+=5){
             for(int l = 0; l <= 8; l++){
                 if(sumNE.keys().contains(QString::number(k) + " " + QString::number(l)))
-                    out << QString::number(k) + "\t" + QString::number(l) + "\t" + QString::number(sumNE[QString::number(k) + " " + QString::number(l)] / num[QString::number(k) + " " + QString::number(l)]) + "\t" + QString::number(sqrt(1.0 / num[QString::number(k) + " " + QString::number(l)])) + "\n";
+                    out << QString::number(k) + "\t" + QString::number(l) + "\t" + QString::number(sumNE[QString::number(k) + " " + QString::number(l)] / num[QString::number(k) + " " + QString::number(l)]) + "\t" + QString::number(sqrt((double)1.0 / num[QString::number(k) + " " + QString::number(l)])) + "\n";
             }
         }
+        outfile.close();
         sumNE.clear();
         sumFWHM.clear();
         num.clear();
