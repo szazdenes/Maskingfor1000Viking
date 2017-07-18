@@ -659,19 +659,19 @@ void MainWindow::on_averagedUltimateResultsPushButton_clicked()
             for(int k = 5; k <= 50; k+=5){
                 for(int l = 0; l <= 8; l++){
                     if(elev == k && cloud == l){
-                       sumNE[QString::number(k) + " " + QString::number(l)] += NE;
-                       sumFWHM[QString::number(k) + " " + QString::number(l)] += pow(FWHM, 2);
-                       num[QString::number(k) + " " + QString::number(l)]++;
+                       sumNE[QString::number(k) + " " + QString::number(l)] += NE/pow(FWHM, 2);
+//                       sumFWHM[QString::number(k) + " " + QString::number(l)] += pow(FWHM, 2);
+                       num[QString::number(k) + " " + QString::number(l)] = 1.0/pow(FWHM, 2);
                     }
                 }
             }
 
         }
-        outfile.setFileName(outFolder.absolutePath() + "/" + currentKey + "_ave.csv");
+        outfile.setFileName(outFolder.absolutePath() + "/" + currentKey + "_ave_modified.csv");
         QTextStream out(&outfile);
         if(!outfile.exists()){
             outfile.open(QIODevice::WriteOnly | QIODevice::Text);
-            out << "#elevation\tcloud\tNE\tFWHM\n";
+            out << "#elevation\tcloud\tNE\tst.error\n";
         }
         if(outfile.exists())
             outfile.open(QIODevice::Append | QIODevice::Text);
@@ -679,14 +679,14 @@ void MainWindow::on_averagedUltimateResultsPushButton_clicked()
         for(int k = 5; k <= 50; k+=5){
             for(int l = 0; l <= 8; l++){
                 if(sumNE.keys().contains(QString::number(k) + " " + QString::number(l)))
-                    out << QString::number(k) + "\t" + QString::number(l) + "\t" + QString::number(sumNE[QString::number(k) + " " + QString::number(l)] / num[QString::number(k) + " " + QString::number(l)]) + "\t" + QString::number(sqrt(sumFWHM[QString::number(k) + " " + QString::number(l)] / num[QString::number(k) + " " + QString::number(l)])) + "\n";
+                    out << QString::number(k) + "\t" + QString::number(l) + "\t" + QString::number(sumNE[QString::number(k) + " " + QString::number(l)] / num[QString::number(k) + " " + QString::number(l)]) + "\t" + QString::number(sqrt(1.0 / num[QString::number(k) + " " + QString::number(l)])) + "\n";
             }
         }
         sumNE.clear();
         sumFWHM.clear();
         num.clear();
         QApplication::processEvents();
-        emit signalWriteToList(currentKey + "_ave.csv created.");
+        emit signalWriteToList(currentKey + "_ave_modified.csv created.");
     }
     emit signalWriteToList("Average calculations ready.");
 }
